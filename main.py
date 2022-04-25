@@ -18,3 +18,16 @@ if not creds or creds.invalid:
 
 #  Creating Service 
 DRIVE = discovery.build('drive', 'v3', http=creds.authorize(Http()))
+
+def getFileDetails(fileName, mimeType, parentFileId = None):
+    if parentFileId == None :
+        fileList = DRIVE.files().list(q = "name = '{}' and mimeType = '{}'".format(fileName, mimeType)).execute().get('files')
+    else:
+        fileList = DRIVE.files().list(q = "parents = '{}' and name = '{}' and mimeType = '{}'".format(parentFileId, fileName, mimeType)).execute().get('files')
+    if len(fileList) == 0 :
+        print("No Files Found, fileDetails()")
+    elif len(fileList) == 1:
+        fileDetails = fileList[0]
+        return fileDetails
+    else:
+        print("More Than One File Found, fileDetails()")
