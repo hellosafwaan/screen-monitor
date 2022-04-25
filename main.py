@@ -31,3 +31,19 @@ def getFileDetails(fileName, mimeType, parentFileId = None):
         return fileDetails
     else:
         print("More Than One File Found, fileDetails()")
+
+def createFolder(newFolderName, parentFolderId = None, shouldReturnDetails = False):
+    if parentFolderId == None:
+        subFolder_metadata = {
+        'name' : newFolderName,
+        'mimeType' : 'application/vnd.google-apps.folder'
+        }
+    else:
+        subFolder_metadata = {
+            'name' : newFolderName,
+            'parents' : [parentFolderId],
+            'mimeType' : 'application/vnd.google-apps.folder'
+            }
+    DRIVE.files().create(body = subFolder_metadata).execute()
+    if shouldReturnDetails:
+        return getFileDetails(newFolderName,'application/vnd.google-apps.folder', parentFileId = parentFolderId)
