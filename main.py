@@ -19,31 +19,31 @@ if not creds or creds.invalid:
 #  Creating Service 
 DRIVE = discovery.build('drive', 'v3', http=creds.authorize(Http()))
 
-def getFileDetails(fileName, mimeType, parentFileId = None):
-    if parentFileId == None :
-        fileList = DRIVE.files().list(q = "name = '{}' and mimeType = '{}'".format(fileName, mimeType)).execute().get('files')
+def get_file_details(file_name, mime_type, parent_file_id = None):
+    if parent_file_id == None :
+        file_list = DRIVE.files().list(q = "name = '{}' and mimeType = '{}'".format(file_name, mime_type)).execute().get('files')
     else:
-        fileList = DRIVE.files().list(q = "parents = '{}' and name = '{}' and mimeType = '{}'".format(parentFileId, fileName, mimeType)).execute().get('files')
-    if len(fileList) == 0 :
+        file_list = DRIVE.files().list(q = "parents = '{}' and name = '{}' and mimeType = '{}'".format(parent_file_id, file_name, mime_type)).execute().get('files')
+    if len(file_list) == 0 :
         print("No Files Found, fileDetails()")
-    elif len(fileList) == 1:
-        fileDetails = fileList[0]
-        return fileDetails
+    elif len(file_list) == 1:
+        file_details = file_list[0]
+        return file_details
     else:
         print("More Than One File Found, fileDetails()")
 
-def createFolder(newFolderName, parentFolderId = None, shouldReturnDetails = False):
-    if parentFolderId == None:
-        subFolder_metadata = {
-        'name' : newFolderName,
+def create_folder(new_folder_name, parent_folder_id = None, should_return_details = False):
+    if parent_folder_id == None:
+        folder_metadata = {
+        'name' : new_folder_name,
         'mimeType' : 'application/vnd.google-apps.folder'
         }
     else:
-        subFolder_metadata = {
-            'name' : newFolderName,
-            'parents' : [parentFolderId],
+        folder_metadata = {
+            'name' : new_folder_name,
+            'parents' : [parent_folder_id],
             'mimeType' : 'application/vnd.google-apps.folder'
             }
-    DRIVE.files().create(body = subFolder_metadata).execute()
-    if shouldReturnDetails:
-        return getFileDetails(newFolderName,'application/vnd.google-apps.folder', parentFileId = parentFolderId)
+    DRIVE.files().create(body = folder_metadata).execute()
+    if should_return_details:
+        return get_file_details(new_folder_name,'application/vnd.google-apps.folder', parentFileId = parent_folder_id)
