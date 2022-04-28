@@ -71,3 +71,10 @@ def upload_file(to_folder_id, file_name, mime_type):
         media_body = media
     ).execute()
     print(file_name)
+
+def find_img_num(img_folder_id):
+    files = DRIVE.files().list(q = "parents = '{}'".format(img_folder_id), pageSize = 1).execute().get('files')
+    if len(files) == 0:
+        return 0
+    else:
+        return int(files[0]['name'][5:][:-4])
