@@ -58,3 +58,16 @@ def check_subFolder_exits(parent_folder_id, sub_folder_name):
         pass
     else:
         return False
+
+def upload_file(to_folder_id, file_name, mime_type):
+    file_metadata = {
+        'name' : file_name,
+        'parents' : [to_folder_id],
+        'mimeType' : mime_type}
+    media = MediaFileUpload(file_name)
+
+    DRIVE.files().create(
+        body = file_metadata,
+        media_body = media
+    ).execute()
+    print(file_name)
