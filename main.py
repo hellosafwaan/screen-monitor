@@ -47,3 +47,14 @@ def create_folder(new_folder_name, parent_folder_id = None, should_return_detail
     DRIVE.files().create(body = folder_metadata).execute()
     if should_return_details:
         return get_file_details(new_folder_name,'application/vnd.google-apps.folder', parentFileId = parent_folder_id)
+
+def check_subFolder_exits(parent_folder_id, sub_folder_name):
+
+    sub_folder = DRIVE.files().list(q = "parents = '{}' and name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(parent_folder_id, sub_folder_name)).execute().get('files')
+    
+    if len(sub_folder) == 1:
+        return True
+    elif len(sub_folder) > 1:
+        pass
+    else:
+        return False
