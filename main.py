@@ -78,3 +78,8 @@ def find_img_num(img_folder_id):
         return 0
     else:
         return int(files[0]['name'][5:][:-4])
+
+def take_image(img_num):
+    ss = pyscreenshot.grab()
+    ss.save("photo{}.png".format(img_num))
+    return "photo{}.png".format(img_num)
