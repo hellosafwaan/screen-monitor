@@ -1,4 +1,4 @@
-import os, os.path,shutil
+import os, os.path
 from datetime import date
 
 from googleapiclient import discovery
