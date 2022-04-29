@@ -89,14 +89,14 @@ def take_image(img_num):
 
 def client_test_and_details(application_folder_id):
     client_name = os.getlogin() 
-    client_status = check_subFolder_exits(application_folder_id, client_name)
+    client_status = check_folder_exits(application_folder_id, client_name)
     if not client_status:
         return create_folder(application_folder_id, client_name, should_return_details = True)  
     else :
         return get_file_details(client_name, 'application/vnd.google-apps.folder',parent_file_id = application_folder_id)
 
 def current_day_folder(client_folder_id, current_date = str(date.today())):
-    if check_subFolder_exits(client_folder_id, current_date):
+    if check_folder_exits(client_folder_id, current_date):
         return get_file_details(current_date, 'application/vnd.google-apps.folder',parent_file_id = client_folder_id)
     else:
         return create_folder(client_folder_id, current_date, should_return_details = True)
