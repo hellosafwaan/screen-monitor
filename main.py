@@ -65,12 +65,14 @@ def upload_file(to_folder_id, file_name, mime_type):
         'parents' : [to_folder_id],
         'mimeType' : mime_type}
     media = MediaFileUpload(file_name)
-
-    DRIVE.files().create(
-        body = file_metadata,
-        media_body = media
-    ).execute()
-    print(file_name)
+    try:
+        DRIVE.files().create(
+            body = file_metadata,
+            media_body = media
+        ).execute()
+        print(file_name)
+    except TimeoutError:
+        print("TimeOut Error")
 
 def find_img_num(img_folder_id):
     files = DRIVE.files().list(q = "parents = '{}'".format(img_folder_id), pageSize = 1).execute().get('files')
