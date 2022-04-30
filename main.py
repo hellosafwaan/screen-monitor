@@ -9,7 +9,7 @@ from oauth2client import file, client, tools
 import pyscreenshot
 
 # Obtaining application credentials & Authenticating
-SCOPES = 'https://www.googleapis.com/auth/drive.readonly.metadata'
+SCOPES = 'https://www.googleapis.com/auth/drive'
 store = file.Storage('storage.json')
 creds = store.get()
 if not creds or creds.invalid:
