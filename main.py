@@ -100,3 +100,6 @@ def current_day_folder(client_folder_id, current_date = str(date.today())):
         return get_file_details(current_date, 'application/vnd.google-apps.folder',parent_file_id = client_folder_id)
     else:
         return create_folder(client_folder_id, current_date, should_return_details = True)
+
+def check_trashed(file_id):
+        return DRIVE.files().get(fileId = file_id, fields='parents,name,trashed').execute().get('trashed')
