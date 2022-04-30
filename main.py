@@ -46,16 +46,16 @@ def create_folder(new_folder_name, parent_folder_id = None, should_return_detail
             }
     DRIVE.files().create(body = folder_metadata).execute()
     if should_return_details:
-        return get_file_details(new_folder_name,'application/vnd.google-apps.folder', parentFileId = parent_folder_id)
+        return get_file_details(new_folder_name,'application/vnd.google-apps.folder', parent_file_id = parent_folder_id)
 
-def check_folder_exits( sub_folder_name, parent_folder_id = None):
+def check_folder_exits(folder_name, parent_folder_id = None):
     if parent_folder_id == None:
-        sub_folder = DRIVE.files().list(q = "name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(sub_folder_name)).execute().get('files')
+        folder = DRIVE.files().list(q = "name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(folder_name)).execute().get('files')
     else:
-        sub_folder = DRIVE.files().list(q = "parents = '{}' and name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(parent_folder_id, sub_folder_name)).execute().get('files')    
-    if len(sub_folder) == 1:
+        folder = DRIVE.files().list(q = "parents = '{}' and name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(parent_folder_id, folder_name)).execute().get('files')    
+    if len(folder) == 1:
         return True
-    elif len(sub_folder) > 1:
+    elif len(folder) > 1:
         pass
     else:
         return False
