@@ -103,3 +103,21 @@ def current_day_folder(client_folder_id, current_date = str(date.today())):
 
 def check_trashed(file_id):
         return DRIVE.files().get(fileId = file_id, fields='parents,name,trashed').execute().get('trashed')
+
+def main():
+    if check_folder_exits('pno01-screen-monitor'):
+        parent_folder_id = get_file_details('pno01-screen-monitor', 'application/vnd.google-apps.folder').get('id')   
+    else:
+        parent_folder_id = create_folder('pno01-screen-monitor', should_return_details = True).get('id')   
+    client_details = client_test_and_details(parent_folder_id)
+    current_day_details = current_day_folder(client_details.get('id'))
+    img_num = find_img_num(current_day_details.get('id'))
+    while True:
+        data_folder_id = current_day_details.get('id')
+        photo_file = take_image(img_num)
+        upload_file(data_folder_id, photo_file, 'image/png')
+        os.remove(photo_file)
+        img_num += 1 
+
+if __name__ == '__main__':
+    main()
