@@ -33,17 +33,12 @@ def get_file_details(file_name, mime_type, parent_file_id = None):
         print("More Than One File Found, fileDetails()")
 
 def create_folder(new_folder_name, parent_folder_id = None, should_return_details = False):
-    if parent_folder_id == None:
-        folder_metadata = {
-        'name' : new_folder_name,
-        'mimeType' : 'application/vnd.google-apps.folder'
-        }
-    else:
-        folder_metadata = {
-            'name' : new_folder_name,
-            'parents' : [parent_folder_id],
-            'mimeType' : 'application/vnd.google-apps.folder'
-            }
+    folder_metadata = {
+    'name' : new_folder_name,
+    'mimeType' : 'application/vnd.google-apps.folder'
+    }
+    if parent_folder_id is not None:
+        folder_metadata['parents'] = [parent_folder_id]
     DRIVE.files().create(body = folder_metadata).execute()
     if should_return_details:
         return get_file_details(new_folder_name,'application/vnd.google-apps.folder', parent_file_id = parent_folder_id)
