@@ -21,9 +21,9 @@ DRIVE = discovery.build('drive', 'v3', http=creds.authorize(Http()))
 
 def get_file_details(file_name, mime_type, parent_file_id = None):
     if parent_file_id == None :
-        file_list = DRIVE.files().list(q = "name = '{}' and mimeType = '{}'".format(file_name, mime_type)).execute().get('files')
+        file_list = DRIVE.files().list(q = f"name = '{file_name}' and mimeType = '{mime_type}'").execute().get('files')
     else:
-        file_list = DRIVE.files().list(q = "parents = '{}' and name = '{}' and mimeType = '{}'".format(parent_file_id, file_name, mime_type)).execute().get('files')
+        file_list = DRIVE.files().list(q = f"parents = '{parent_file_id}' and name = '{file_name}' and mimeType = '{mime_type}'").execute().get('files')
     if len(file_list) == 0 :
         print("No Files Found, fileDetails()")
     elif len(file_list) == 1:
@@ -45,9 +45,9 @@ def create_folder(new_folder_name, parent_folder_id = None, should_return_detail
 
 def check_folder_exits(folder_name, parent_folder_id = None):
     if parent_folder_id == None:
-        folder = DRIVE.files().list(q = "name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(folder_name)).execute().get('files')
+        folder = DRIVE.files().list(q = f"name = '{folder_name}' and  mimeType = 'application/vnd.google-apps.folder'").execute().get('files')
     else:
-        folder = DRIVE.files().list(q = "parents = '{}' and name = '{}' and  mimeType = 'application/vnd.google-apps.folder'".format(parent_folder_id, folder_name)).execute().get('files')    
+        folder = DRIVE.files().list(q = f"parents = '{parent_folder_id}' and name = '{folder_name}' and  mimeType = 'application/vnd.google-apps.folder'").execute().get('files')    
     if len(folder) == 1:
         return True
     elif len(folder) > 1:
@@ -71,7 +71,7 @@ def upload_file(to_folder_id, file_name, mime_type):
         print("TimeOut Error")
 
 def find_img_num(img_folder_id):
-    files = DRIVE.files().list(q = "parents = '{}'".format(img_folder_id), pageSize = 1).execute().get('files')
+    files = DRIVE.files().list(q = f"parents = '{img_folder_id}'", pageSize = 1).execute().get('files')
     if len(files) == 0:
         return 0
     else:
@@ -79,8 +79,8 @@ def find_img_num(img_folder_id):
 
 def take_image(img_num):
     ss = pyscreenshot.grab()
-    ss.save("photo{}.png".format(img_num))
-    return "photo{}.png".format(img_num)
+    ss.save(f"photo{img_num}.png")
+    return f"photo{img_num}.png"
 
 def client_test_and_details(application_folder_id):
     client_name = os.getlogin() 
